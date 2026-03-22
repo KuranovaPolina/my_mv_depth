@@ -31,8 +31,8 @@ pixel_coordinate = np.concatenate(
     (pixel_coordinate, np.ones([1, 320, 256])), axis=0)
 pixel_coordinate = np.reshape(pixel_coordinate, [3, -1])
 
-cv2.namedWindow('result')
-cv2.moveWindow('result', 200, 200)
+# cv2.namedWindow('result')
+# cv2.moveWindow('result', 200, 200)
 
 for this_sample in sample_datas:
 
