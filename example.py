@@ -12,6 +12,8 @@ from torch import Tensor
 from depthNet_model import depthNet
 from visualize import *
 
+import matplotlib.pyplot as plt
+
 with open('sample_data.pkl', 'rb') as fp:
     sample_datas = pickle.load(fp, encoding='latin1')
 
@@ -74,6 +76,13 @@ for this_sample in sample_datas:
     np_depth = np2Depth(idepth, np.zeros(invalid_mask.shape, dtype=bool))
     result_image = np.concatenate(
         (np_left, np_right, np_gtdepth, np_depth), axis=1)
-    cv2.imshow("result", result_image)
-    if cv2.waitKey(1000) == 27:
-        break
+    # cv2.imshow("result", result_image)
+    # if cv2.waitKey(1000) == 27:
+    #     break
+
+    result_rgb = cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB)
+
+    # 2. Display the image inline
+    plt.imshow(result_rgb)
+    plt.axis('off')  # Hide the axes
+    plt.show()
