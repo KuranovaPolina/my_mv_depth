@@ -19,7 +19,7 @@ def down_conv_layer(input_channels, output_channels, kernel_size):
             input_channels,
             output_channels,
             kernel_size,
-            padding=(kernel_size - 1) / 2,
+            padding=int((kernel_size - 1) / 2),
             stride=1,
             bias=False),
    nn.BatchNorm2d(output_channels),
@@ -28,7 +28,7 @@ def down_conv_layer(input_channels, output_channels, kernel_size):
             output_channels,
             output_channels,
             kernel_size,
-            padding=(kernel_size - 1) / 2,
+            padding=int((kernel_size - 1) / 2),
             stride=2,
             bias=False),
    nn.BatchNorm2d(output_channels),
@@ -40,7 +40,7 @@ def conv_layer(input_channels, output_channels, kernel_size):
             input_channels,
             output_channels,
             kernel_size,
-            padding=(kernel_size - 1) / 2,
+            padding=int((kernel_size - 1) / 2),
             bias=False),
   nn.BatchNorm2d(output_channels),
         nn.ReLU())
@@ -59,7 +59,7 @@ def up_conv_layer(input_channels, output_channels, kernel_size):
             input_channels,
             output_channels,
             kernel_size,
-            padding=(kernel_size - 1) / 2,
+            padding=int((kernel_size - 1) / 2),
             bias=False),
   nn.BatchNorm2d(output_channels),
         nn.ReLU())
@@ -114,15 +114,15 @@ class depthNet(nn.Module):
         total_num = 0
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                init.kaiming_normal(m.weight, mode='fan_out')
+                init.kaiming_normal_(m.weight, mode='fan_out')
                 total_num += get_trainable_number(m.weight)
                 if m.bias is not None:
                     init.constant(m.bias, 0)
                     total_num += get_trainable_number(m.bias)
             elif isinstance(m, nn.BatchNorm2d):
-                init.constant(m.weight, 1)
+                init.constant_(m.weight, 1)
                 total_num += get_trainable_number(m.weight)
-                init.constant(m.bias, 0)
+                init.constant_(m.bias, 0)
                 total_num += get_trainable_number(m.bias)
             elif isinstance(m, nn.Linear):
                 init.normal(m.weight, std=1e-3)
